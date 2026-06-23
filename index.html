@@ -1426,6 +1426,67 @@ function getInterpretasi(id, scores){
       +'<strong>🎯 Kaitannya dengan cita-citamu ('+cita+') dan keahlianmu ('+keahlian+'):</strong><br>'+isi+'</div>';
   }
 
+  // ── Kaitan dengan olahraga favorit (berlaku untuk semua modul)
+  var olahraga = APP.siswa.olahraga||'-';
+  function boxOlahraga(){
+    if(olahraga==='-') return '';
+    return '<div style="background:#fff4e6;border-left:4px solid #e67e22;border-radius:0 8px 8px 0;padding:.75rem 1rem;margin:.75rem 0;font-size:13px;line-height:1.7;color:#7a3d00">'
+      +'<strong>🏀 Kaitannya dengan olahraga favoritmu ('+olahraga+'):</strong><br>'
+      +'Olahraga yang kamu sukai ini juga bisa jadi sarana melatih dan mengasah <strong>'+t0+'</strong>-mu. Semakin rajin dan disiplin berlatih, semakin terasah pula kemampuan ini dalam kehidupan sehari-harimu — di sekolah maupun di luar sekolah.'
+      +'</div>';
+  }
+
+  // ── Kelebihan & Kekurangan (generik, berlaku untuk semua modul)
+  var pLow = top[top.length-1]?top[top.length-1].pct:0;
+  function boxKelebihanKekurangan(){
+    return '<div style="background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius-lg);padding:1rem 1.1rem;margin:.85rem 0">'
+      +'<div style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:.6rem">📊 Kelebihan &amp; Kekuranganmu</div>'
+      +'<div style="font-size:13px;line-height:1.8;color:var(--ink-md)">'
+      +'<strong style="color:#1a7a4a">✅ Kelebihan:</strong> <strong>'+t0+'</strong> ('+p0+'%) — ini adalah kekuatan utamamu saat ini. Manfaatkan dan kembangkan terus, karena ini modal besar untuk masa depanmu.<br>'
+      +'<strong style="color:#c0392b">🔧 Yang masih perlu ditingkatkan:</strong> <strong>'+low+'</strong> ('+pLow+'%) — ini bukan kekurangan yang menetap selamanya, tapi sinyal area mana yang paling berpotensi untuk kamu kembangkan lebih jauh.'
+      +'</div></div>';
+  }
+
+  // ── Bank ayat Al-Qur'an + kata motivasi, dipilih sesuai tema tiap modul
+  var QURAN_MOTIVASI = {
+    gaya: {
+      motivasi: 'Jangan berkecil hati kalau cara belajar <strong>'+low+'</strong> masih terasa sulit untukmu. Setiap orang punya cara belajarnya sendiri-sendiri — tugasmu bukan menjadi sama seperti orang lain, tapi menemukan dan mengasah caramu sendiri dengan sungguh-sungguh.',
+      makna: 'Allah menegaskan bahwa orang yang berilmu dan mau terus belajar memiliki kedudukan yang berbeda dari yang tidak. Maka teruslah belajar dengan caramu sendiri — setiap usaha menuntut ilmu sangat dihargai.',
+      referensi: 'QS. Az-Zumar (39) : 9'
+    },
+    mi: {
+      motivasi: 'Kecerdasan <strong>'+low+'</strong>-mu yang masih rendah bukan berarti kamu "kurang pintar". Setiap orang diciptakan dengan kelebihan masing-masing yang berbeda-beda. Fokuslah mengembangkan keunikanmu sendiri, bukan membandingkan diri dengan orang lain.',
+      makna: 'Setiap orang bertindak dan berkembang sesuai dengan pembawaan serta keunikannya masing-masing — maka kenali dan kembangkan keunikanmu sendiri dengan percaya diri.',
+      referensi: 'QS. Al-Isra (17) : 84'
+    },
+    bakat: {
+      motivasi: 'Minat di bidang <strong>'+low+'</strong> yang masih kecil bukan masalah besar — yang penting adalah niat dan usahamu untuk terus mencoba hal baru. Bakat sejatinya adalah karunia yang akan terlihat penuh kalau diiringi usaha yang konsisten.',
+      makna: 'Allah menciptakan hidup ini untuk menguji siapa di antara kita yang paling baik amal dan usahanya. Maka jadikan setiap bakat dan minatmu sebagai sarana untuk berkarya dan berbuat baik.',
+      referensi: 'QS. Al-Mulk (67) : 2'
+    },
+    motivasi: {
+      motivasi: 'Kalau <strong>'+low+'</strong>-mu masih perlu ditingkatkan, ingatlah bahwa perubahan besar selalu dimulai dari niat dan langkah kecil dari dirimu sendiri. Tidak ada yang bisa mengubah dirimu menjadi lebih baik selain dirimu sendiri yang mau berusaha.',
+      makna: 'Allah tidak mengubah keadaan suatu kaum (atau diri seseorang), kecuali kaum atau orang itu sendiri yang mau mengubah dan mengusahakannya. Maka mulailah perubahan itu dari dirimu sendiri.',
+      referensi: "QS. Ar-Ra'd (13) : 11"
+    },
+    kepemimpinan: {
+      motivasi: 'Kalau kemampuan <strong>'+low+'</strong>-mu masih perlu dilatih, jangan ragu untuk terus mencoba memimpin — baik memimpin dirimu sendiri maupun kelompok kecil di sekitarmu. Pemimpin yang baik tidak lahir instan, tapi terbentuk dari latihan dan tanggung jawab yang dijalani sedikit demi sedikit.',
+      makna: 'Allah memberi amanah kepada manusia sebagai pemimpin (khalifah) di bumi. Memimpin adalah amanah yang harus dijalankan dengan tanggung jawab dan terus dilatih kemampuannya.',
+      referensi: 'QS. Al-Baqarah (2) : 30'
+    }
+  };
+  function boxMotivasiAyat(){
+    var v = QURAN_MOTIVASI[id];
+    if(!v) return '';
+    return '<div style="background:#eef6f0;border:1.5px dashed #1a7a4a;border-radius:var(--radius-lg);padding:1rem 1.1rem;margin-top:1rem">'
+      +'<div style="font-size:13px;font-weight:700;color:#1a7a4a;margin-bottom:.5rem">💪 Kata Motivasi untukmu</div>'
+      +'<div style="font-size:13px;color:var(--ink-md);line-height:1.75;margin-bottom:.75rem">'+v.motivasi+'</div>'
+      +'<div style="background:#fff;border-radius:var(--radius);padding:.75rem 1rem;border-left:4px solid #c8922a">'
+      +'<div style="font-size:12px;color:#7a5000;font-style:italic;line-height:1.7">'+v.makna+'</div>'
+      +'<div style="font-size:11px;color:#a0835a;margin-top:.4rem;font-weight:600">— '+v.referensi+'</div>'
+      +'</div></div>';
+  }
+
   // ══════════════════════════════════
   // GAYA BELAJAR
   // ══════════════════════════════════
@@ -1483,8 +1544,10 @@ function getInterpretasi(id, scores){
         +'</div>'
         +'<div style="font-size:11px;color:#a0835a;margin-top:.65rem;font-style:italic">💡 Tidak ada gaya belajar yang paling baik. Yang terpenting adalah kamu tahu cara belajar yang paling efektif untukmu!</div>'
         +'</div>'
+        +'<br>'+boxKelebihanKekurangan()
         +(koneksi!='Karena gaya belajarmu <strong>'+t0+'</strong>, maka:'?boxKoneksi(koneksi):'')
-        +(citaBox?boxCita(citaBox):''),
+        +(citaBox?boxCita(citaBox):'')
+        +boxOlahraga(),
       saran:'<strong>💡 Cara belajar terbaik untukmu:</strong><br><br>'
         +tip+'<br><br>'
         +'✅ <strong>Di kelas:</strong> pilih tempat duduk yang memudahkan gaya '+t0+'-mu (depan untuk Visual/Auditori, dekat pintu untuk Kinestetik).<br>'
@@ -1492,6 +1555,7 @@ function getInterpretasi(id, scores){
         +'✅ <strong>Saat ujian:</strong> gunakan teknik review sesuai gaya belajarmu sendiri, bukan ikut-ikutan cara teman.<br>'
         +'✅ <strong>Gaya '+low+' ('+top[top.length-1].pct+'%)</strong> masih perlu dikembangkan — coba sesekali gunakan cara ini supaya kamu makin fleksibel.<br>'
         +'✅ Ceritakan hasil ini ke Guru BK untuk mendapat panduan belajar yang lebih personal!'
+        +boxMotivasiAyat()
     };
   }
 
@@ -1562,8 +1626,10 @@ function getInterpretasi(id, scores){
         +'</div>'
         +'<div style="font-size:11px;color:#a0835a;margin-top:.65rem;font-style:italic">💡 Setiap orang memiliki semua 8 kecerdasan dalam kadar berbeda. Tidak ada yang lebih baik atau buruk — kamu cerdas dengan caramu sendiri!</div>'
         +'</div>'
+        +'<br>'+boxKelebihanKekurangan()
         +(koneksiMI?boxKoneksi(koneksiMI):'')
-        +(citaMI?boxCita(citaMI):''),
+        +(citaMI?boxCita(citaMI):'')
+        +boxOlahraga(),
       saran:'<strong>💡 Cara mengembangkan kecerdasan '+t0+'-mu:</strong><br><br>'
         +({'Linguistik':'✅ Rajin menulis cerita, puisi, atau blog. Ikut ekskul <strong>jurnalistik atau debat</strong>.<br>✅ Baca buku minimal 1 bab per hari. Latih public speaking di depan cermin.<br>✅ Coba jadi narator atau MC di acara sekolah.',
           'Logis-Mat.':'✅ Ikut olimpiade matematika atau sains. Coba belajar <strong>coding/pemrograman</strong> dasar.<br>✅ Main chess, teka-teki logika, atau game strategi. Selesaikan soal tantangan tiap hari.<br>✅ Bergabung dengan ekskul KIR (Karya Ilmiah Remaja).',
@@ -1575,6 +1641,7 @@ function getInterpretasi(id, scores){
           'Naturalis':'✅ Rawat tanaman atau hewan peliharaan. Ikut <strong>ekskul lingkungan hidup atau pertanian</strong>.<br>✅ Sering jalan di alam terbuka dan amati berbagai makhluk hidup.<br>✅ Ikut kegiatan berkemah, jelajah alam, atau KIR bidang biologi.'}[t0]||'Kembangkan kecerdasanmu dengan aktif berkegiatan.')
         +'<br><br>✅ <strong>Kecerdasan '+low+' ('+top[top.length-1].pct+'%)</strong> masih bisa dikembangkan — mulai dari aktivitas kecil yang menyenangkan setiap minggu.<br>'
         +'✅ Ceritakan profil kecerdasanmu ke Guru BK untuk rekomendasi ekskul dan jurusan yang paling tepat!'
+        +boxMotivasiAyat()
     };
   }
 
@@ -1642,8 +1709,10 @@ function getInterpretasi(id, scores){
         +'</div>'
         +'<div style="font-size:11px;color:#a0835a;margin-top:.65rem;font-style:italic">💡 Kode Holland-mu menggambarkan kombinasi unik dari minat dan bakatmu. Semakin tinggi skornya, semakin kuat ketertarikanmu di bidang itu!</div>'
         +'</div>'
+        +'<br>'+boxKelebihanKekurangan()
         +(koneksiBakat?boxKoneksi(koneksiBakat):'')
-        +boxCita(fullCita),
+        +boxCita(fullCita)
+        +boxOlahraga(),
       saran:'<strong>🎯 Pilihan Karir Terbaik untuk Tipe '+t0+':</strong><br>'
         +jobList0
         +'<br><br><strong>🎯 Pilihan Karir Tambahan (Tipe '+t1+'):</strong><br>'
@@ -1654,6 +1723,7 @@ function getInterpretasi(id, scores){
         +'<br><br>✅ Mulai eksplorasi profesi yang diminati: cari info di internet, tonton video keseharian profesi tersebut di YouTube.<br>'
         +'✅ Bicarakan dengan Guru BK untuk membuat <em>peta jalan karir</em>: SMP → SMA/SMK → Kuliah → Profesi.<br>'
         +'✅ Keahlianmu dalam <strong>'+keahlian+'</strong> adalah bukti nyata potensimu — terus asah!'
+        +boxMotivasiAyat()
     };
   }
 
@@ -1719,14 +1789,17 @@ function getInterpretasi(id, scores){
         +'</div>'
         +'<div style="font-size:11px;color:#a0835a;margin-top:.65rem;font-style:italic">💡 Motivasi terbaik adalah kombinasi antara motivasi intrinsik yang kuat dan manajemen diri yang baik!</div>'
         +'</div>'
+        +'<br>'+boxKelebihanKekurangan()
         +(koneksiMotiv?boxKoneksi(koneksiMotiv):'')
-        +(citaMotiv?boxCita(citaMotiv):''),
+        +(citaMotiv?boxCita(citaMotiv):'')
+        +boxOlahraga(),
       saran:'<strong>💡 Cara meningkatkan motivasi belajarmu:</strong><br><br>'
         +'✅ <strong>Pertahankan '+t0+'</strong> yang sudah bagus dengan terus menghubungkan belajar dengan hal yang kamu sukai.<br>'
         +'✅ <strong>Tingkatkan '+low+'</strong>: '+lowTipsMotiv[low]+'<br>'
         +'✅ Buat <strong>papan motivasi</strong> — tempel foto impian, kata-kata semangat, dan fotomu saat berprestasi di meja belajar.<br>'
         +'✅ Ingat: <em>"Belajar hari ini untuk menjadi '+cita+' di masa depan."</em><br>'
         +'✅ Ceritakan ke Guru BK kalau semangat belajarmu sedang menurun — itu hal yang normal dan bisa diatasi!'
+        +boxMotivasiAyat()
     };
   }
 
@@ -1785,8 +1858,10 @@ function getInterpretasi(id, scores){
         +'</div>'
         +'<div style="font-size:11px;color:#a0835a;margin-top:.65rem;font-style:italic">💡 Pemimpin sejati tidak harus sempurna di semua dimensi — yang terpenting adalah terus berkembang dan selalu melayani dengan tulus!</div>'
         +'</div>'
+        +'<br>'+boxKelebihanKekurangan()
         +(koneksiKep?boxKoneksi(koneksiKep):'')
-        +(citaKep?boxCita(citaKep):''),
+        +(citaKep?boxCita(citaKep):'')
+        +boxOlahraga(),
       saran:'<strong>💡 Cara mengembangkan jiwa kepemimpinanmu:</strong><br><br>'
         +'✅ <strong>Daftar dan aktif di OSIS atau MPK</strong> — ini adalah tempat latihan kepemimpinan terbaik di sekolah!<br>'
         +'✅ <strong>Jadi ketua</strong> di setiap kegiatan kelompok, kepanitiaan, atau proyek kelas.<br>'
@@ -1799,6 +1874,7 @@ function getInterpretasi(id, scores){
           'Organisasi':'Pakai buku agenda atau aplikasi to-do list untuk merencanakan harimu. Buat daftar tugas setiap pagi.'}[low]||'Latih secara bertahap melalui kegiatan nyata.')
         +'<br>✅ <strong>Ingat:</strong> Pemimpin terbaik adalah yang melayani, bukan yang dilayani. Mulailah dari memimpin dirimu sendiri!<br>'
         +'✅ Ceritakan ke Guru BK untuk mendapat rekomendasi pelatihan kepemimpinan yang sesuai!'
+        +boxMotivasiAyat()
     };
   }
 
@@ -1815,6 +1891,7 @@ function showProfil(){
   // Hitung hanya angket yang ada di MENUS (bukan key lama)
   var selesai = MENUS.filter(function(m){ return !!h[m.id]; }).length;
   function getTop(id){ return h[id]&&h[id].scores ? h[id].scores.slice().sort(function(a,b){return b.pct-a.pct;})[0] : null; }
+  function getLow(id){ return h[id]&&h[id].scores ? h[id].scores.slice().sort(function(a,b){return b.pct-a.pct;})[h[id].scores.length-1] : null; }
   var gayaTop=getTop('gaya'), miTop=getTop('mi'), bakatTop=getTop('bakat'), kepTop=getTop('kepemimpinan');
 
   var potensi = (function(){
@@ -1826,6 +1903,19 @@ function showProfil(){
     return items.length ? items.join('<br>') : 'Lengkapi semua angket untuk mendapatkan profil potensi lengkap.';
   })();
 
+  // ── Kelebihan & Kekurangan gabungan dari semua angket yang sudah diisi
+  var kelebihanKekuranganProfil = (function(){
+    var diisi = MENUS.filter(function(m){ return !!h[m.id]; });
+    if(!diisi.length) return '<span style="color:var(--ink-lt)">Lengkapi minimal satu angket untuk melihat analisis kelebihan dan kekurangan.</span>';
+    var rows = diisi.map(function(m){
+      var top = getTop(m.id), low = getLow(m.id);
+      return '<div style="margin-bottom:.65rem"><strong style="color:var(--ink)">'+m.label+':</strong><br>'
+        +'<span style="color:#1a7a4a">✅ Kelebihan: '+top.label+' ('+top.pct+'%)</span> &nbsp;|&nbsp; '
+        +'<span style="color:#c0392b">🔧 Perlu ditingkatkan: '+low.label+' ('+low.pct+'%)</span></div>';
+    }).join('');
+    return rows;
+  })();
+
   var cita = (s.cita||'').toLowerCase();
   var ket = '';
   if(/dokter|perawat|bidan|farmasi/.test(cita)) ket='Bidang kesehatan membutuhkan kecerdasan Logis-Matematis dan Naturalis. ';
@@ -1835,6 +1925,19 @@ function showProfil(){
   else if(/programmer|coding|teknologi|it/.test(cita)) ket='Bidang teknologi sesuai dengan kecerdasan Logis-Matematis dan tipe Investigatif. ';
   else ket='Untuk mewujudkan cita-cita sebagai <strong>'+(s.cita||'-')+'</strong>, terus kembangkan potensi terbaikmu. ';
   var kesesuaian = (!cita||cita==='-') ? 'Cita-cita belum diisi.' : ket+'Diskusikan lebih lanjut dengan Guru BK untuk peta jalan karir yang spesifik.';
+
+  // ── Kaitan dengan olahraga & keahlian (lengkap, di luar cita-cita)
+  var olahragaKeahlianBox = (function(){
+    var ol = s.olahraga, ke = s.keahlian;
+    var parts = [];
+    if(ol && ol!=='-'){
+      parts.push('Olahraga favoritmu, <strong>'+ol+'</strong>, melatih kedisiplinan dan kerja keras yang juga sangat berguna untuk mendukung potensi'+(gayaTop?' gaya belajar <strong>'+gayaTop.label+'</strong>-mu':'')+(kepTop?' dan kemampuan kepemimpinan <strong>'+kepTop.label+'</strong>-mu':'')+'.');
+    }
+    if(ke && ke!=='-'){
+      parts.push('Keahlianmu dalam <strong>'+ke+'</strong> adalah bukti nyata dari potensi yang sudah berkembang dalam dirimu — terus diasah agar makin matang dan bisa mendukung cita-citamu kelak.');
+    }
+    return parts.length ? parts.join(' ') : 'Lengkapi data olahraga dan keahlian di halaman identitas supaya analisis ini lebih lengkap.';
+  })();
 
   var hasilRows = MENUS.map(function(m){
     var res = h[m.id];
@@ -1870,12 +1973,20 @@ function showProfil(){
     +'<hr class="divider">'
     +'<h3 style="font-size:15px;font-weight:700;color:var(--green);margin-bottom:.65rem"><i class="ti ti-sparkles" style="vertical-align:-2px"></i> Rangkuman Potensi</h3>'
     +'<div class="uraian-box" style="margin-bottom:1rem">'+potensi+'</div>'
+    +'<h3 style="font-size:15px;font-weight:700;color:var(--green);margin-bottom:.65rem"><i class="ti ti-chart-bar" style="vertical-align:-2px"></i> Kelebihan &amp; Kekurangan (Semua Angket)</h3>'
+    +'<div class="uraian-box" style="margin-bottom:1rem">'+kelebihanKekuranganProfil+'</div>'
     +'<h3 style="font-size:15px;font-weight:700;color:var(--green);margin-bottom:.65rem"><i class="ti ti-target" style="vertical-align:-2px"></i> Kesesuaian dengan Cita-cita</h3>'
     +'<div class="uraian-box" style="margin-bottom:1rem">'+kesesuaian+'</div>'
+    +'<h3 style="font-size:15px;font-weight:700;color:var(--green);margin-bottom:.65rem"><i class="ti ti-ball-basketball" style="vertical-align:-2px"></i> Kaitan dengan Olahraga &amp; Keahlian</h3>'
+    +'<div class="uraian-box" style="margin-bottom:1rem">'+olahragaKeahlianBox+'</div>'
     +(selesai>0?'<h3 style="font-size:15px;font-weight:700;color:var(--green);margin-bottom:.65rem"><i class="ti ti-chart-line" style="vertical-align:-2px"></i> Hasil per Angket</h3>'
       +'<div style="border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:1rem">'+hasilRows+'</div>':'')
     +'<h3 style="font-size:15px;font-weight:700;color:var(--green);margin-bottom:.65rem"><i class="ti ti-heart" style="vertical-align:-2px"></i> Pesan Motivasi</h3>'
-    +'<div class="motivasi-box">Hai <strong>'+nama1+'</strong>! Kamu memiliki potensi luar biasa yang menunggu untuk dieksplorasi. Setiap langkah kecil yang kamu ambil hari ini adalah batu loncatan menuju <strong>'+citaLabel+'</strong> di masa depan.<br><br>Percayalah pada kemampuanmu sendiri — Guru BK selalu ada untuk mendukungmu. Semangat terus, kamu luar biasa! 🌟</div>'
+    +'<div class="motivasi-box">Hai <strong>'+nama1+'</strong>! Kamu memiliki potensi luar biasa yang menunggu untuk dieksplorasi. Setiap langkah kecil yang kamu ambil hari ini adalah batu loncatan menuju <strong>'+citaLabel+'</strong> di masa depan.<br><br>Percayalah pada kemampuanmu sendiri — Guru BK selalu ada untuk mendukungmu. Semangat terus, kamu luar biasa! 🌟'
+    +'<div style="background:#fff;border-radius:var(--radius);padding:.75rem 1rem;margin-top:.85rem;border-left:4px solid #c8922a">'
+    +'<div style="font-size:12px;color:#7a5000;font-style:italic;line-height:1.7">Sesungguhnya bersama kesulitan itu pasti ada kemudahan. Maka teruslah berusaha mengatasi kekuranganmu sedikit demi sedikit — pertolongan dan kemudahan dari Allah akan datang bagi yang terus berikhtiar.</div>'
+    +'<div style="font-size:11px;color:#a0835a;margin-top:.4rem;font-weight:600">— QS. Al-Insyirah (94) : 5-6</div>'
+    +'</div></div>'
     +'<div class="btn-row">'
     +'<button class="btn btn-pdf" id="profil-pdf"><i class="ti ti-file-type-pdf"></i> Export PDF Lengkap</button>'
     +'<button class="btn btn-sheets" id="profil-sheets"><i class="ti ti-table-export"></i> Simpan ke Sheets</button>'
@@ -1883,6 +1994,7 @@ function showProfil(){
     +'<button class="btn btn-green" id="profil-back-btn"><i class="ti ti-arrow-left"></i> Kembali</button>'
     +'</div>'
     +'</div>';
+
 
   document.getElementById('profil-back').addEventListener('click', function(){ showScreen('menu'); renderMenu(); });
   document.getElementById('profil-back-btn').addEventListener('click', function(){ showScreen('menu'); renderMenu(); });
